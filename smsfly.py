@@ -46,13 +46,13 @@ class SMSFlyAPI:
     def __getbalance(self):
         pass
 
-    def addalfaname(self, *, alfaname):
-        pass
+    def add_alphaname(self, alphaname):
+        return self.__managealfaname(command_id='ADDALFANAME', alfaname=alphaname)
 
-    def checkalfaname(self, *, alfaname):
-        pass
+    def check_alphaname(self, alphaname):
+        return self.__managealfaname(command_id='CHECKALFANAME', alfaname=alphaname)
 
-    def getalfanameslist(self):
+    def get_alphanames_list(self):
         return self.__managealfaname(command_id='GETALFANAMESLIST')
 
     def __managealfaname(self, *, command_id, alfaname=None):
