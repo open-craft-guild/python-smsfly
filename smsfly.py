@@ -1,10 +1,15 @@
 import os
 
+import requests as req
+from requests.auth import HTTPBasicAuth
+
 
 class SMSFlyAPI:
 
     def __init__(self, account_id=os.getenv('SMSFLY_ID'), account_pass=os.getenv('SMSFLY_PASS')):
-        pass
+        session = req.Session()
+        session.auth = HTTPBasicAuth(account_id, account_pass)
+        self.__http = session
 
     def send_sms_to_recipient(self, *, start_time, end_time, lifetime, rate, desc, source, body, recipient):
         return self.__sendsms(start_time, end_time, lifetime, rate, desc, source,
