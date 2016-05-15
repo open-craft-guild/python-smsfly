@@ -2,14 +2,27 @@ import os
 
 import requests as req
 from requests.auth import HTTPBasicAuth
+from bs4 import BeautifulSoup as bs
 
 
 class SMSFlyAPI:
+    API_URL = 'http://sms-fly.com/api/api.php'
 
     def __init__(self, account_id=os.getenv('SMSFLY_ID'), account_pass=os.getenv('SMSFLY_PASS')):
         session = req.Session()
         session.auth = HTTPBasicAuth(account_id, account_pass)
         self.__http = session
+
+    def __request(self, request_xml_body):
+        return self.__http.post(self.API_URL, data=request_xml_body)
+
+    def __construct_xml_payload_base(self, *, operation):
+        soup = bs(features='lxml-xml')
+        soup.append(soup.new_tag('request'))
+        op = soup.new_tag('operation')
+        op.string = operation
+        soup.request.append(operation)
+        return soup
 
     def send_sms_to_recipient(self, *, start_time, end_time, lifetime, rate, desc, source, body, recipient):
         return self.__sendsms(start_time, end_time, lifetime, rate, desc, source,
@@ -49,7 +62,7 @@ class SMSFlyAPI:
         pass
 
     def __getbalance(self):
-        pass
+        return self.__request(self.__construct_xml_payload_base(operation='GETBALANCE'))
 
     def add_alphaname(self, alphaname):
         return self.__managealfaname(command_id='ADDALFANAME', alfaname=alphaname)
@@ -61,4 +74,10 @@ class SMSFlyAPI:
         return self.__managealfaname(command_id='GETALFANAMESLIST')
 
     def __managealfaname(self, *, command_id, alfaname=None):
-        pass
+        xml_req = self.__construct_xml_payload_base(operation='MANAGEALFANAME')
+        xml_req.append(bs.new_tag('command', id=command_id))
+
+        if alfaname:
+            xml_req.command['alfaname'] = alfaname
+
+        return self.__request(xml_req)
