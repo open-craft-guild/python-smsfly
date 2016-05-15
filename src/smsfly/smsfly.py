@@ -4,6 +4,8 @@ import requests as req
 from requests.auth import HTTPBasicAuth
 from bs4 import BeautifulSoup as bs
 
+from .util import parse_xml_response
+
 
 class SMSFlyAPI:
     API_URL = 'http://sms-fly.com/api/api.php'
@@ -13,6 +15,7 @@ class SMSFlyAPI:
         session.auth = HTTPBasicAuth(account_id, account_pass)
         self.__http = session
 
+    @parse_xml_response()
     def __request(self, request_xml_body):
         return self.__http.post(self.API_URL, data=request_xml_body)
 
