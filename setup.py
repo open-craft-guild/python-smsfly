@@ -30,6 +30,7 @@ extras_require = {
         'ipdbplugin==1.4.5',  # Runs interactive debuger on nose test fail
     ],
     'test': [
+        'unittest2==1.1.0',
         'nose==1.3.7',
     ],
 }
