@@ -44,37 +44,37 @@ class SMSFlyAPI:
     def __sendsms(self, start_time, end_time, lifetime, rate, desc,
                   source, message_pairs, individual_mode=False):
         add_body = True
-        req_body = __construct_xml_payload_base(operation='SENDSMS')
+        xml_req = __construct_xml_payload_base(operation='SENDSMS')
         for recipient, body in message_pairs:
             if not individual_mode:
                 if add_body:
                     add_body = not add_body
-                    req_body.request.append(soup.new_tag('body'))
-                    req_body.request.body.append(body)
+                    xml_req.request.append(soup.new_tag('body'))
+                    xml_req.request.body.append(body)
             else:
-                bod = req_body.new_tag('body'))
+                bod = xml_req.new_tag('body'))
                 bod.append(body)
-                req_body.request.append(bod)
-            rec = req_body.new_tag('recipient'))
+                xml_req.request.append(bod)
+            rec = xml_req.new_tag('recipient'))
             rec.append(recipient)
-            req_body.request.append(rec)
-        return __request(req_body)
+            xml_req.request.append(rec)
+        return __request(xml_req)
 
     def __getcampaigninfo(self, *, campaign_id):
-        req_body = __construct_xml_payload_base(operation='GETCAMPAIGNINFO')
-        req_body.request.append(req_body.new_tag('message', campaignID=str(campaign_id))
-        return __request(req_body)
+        xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNINFO')
+        xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id))
+        return __request(xml_req)
 
     def __getcampaigndetail(self, *, campaign_id):
-        req_body = __construct_xml_payload_base(operation='GETCAMPAIGNDETAIL')
-        req_body.request.append(req_body.new_tag('message', campaignID=str(campaign_id))
-        return __request(req_body)
+        xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNDETAIL')
+        xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id))
+        return __request(xml_req)
 
     def __getmessagestatus(self, *, campaign_id, recipient):
-        req_body = __construct_xml_payload_base(operation='GETCAMPAIGNINFO')
-        message = req_body.new_tag('message', campaignID=str(campaign_id), recipient=str(recipient))
-        req_body.request.append(message)
-        return __request(req_body)
+        xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNINFO')
+        message = xml_req.new_tag('message', campaignID=str(campaign_id), recipient=str(recipient))
+        xml_req.request.append(message)
+        return __request(xml_req)
 
     def __getbalance(self):
         return self.__request(self.__construct_xml_payload_base(operation='GETBALANCE'))
