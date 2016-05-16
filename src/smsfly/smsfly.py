@@ -44,16 +44,21 @@ class SMSFlyAPI:
     def __sendsms(self, start_time, end_time, lifetime, rate, desc,
                   source, message_pairs, individual_mode=False):
         add_body = True
+        req_body = __construct_xml_payload_base(operation='SENDSMS')
         for recipient, body in message_pairs:
             if not individual_mode:
                 if add_body:
                     add_body = not add_body
-                    # add body of message_pairs[0][1]
+                    req_body.request.append(soup.new_tag('body'))
+                    req_body.request.body.append(body)
             else:
-                # add body
-                pass
-            # add recipient
-        return
+                bod = req_body.new_tag('body'))
+                bod.append(body)
+                req_body.request.append(bod)
+            rec = req_body.new_tag('recipient'))
+            rec.append(recipient)
+            req_body.request.append(rec)
+        return __request(req_body)
 
     def __getcampaigninfo(self, *, campaign_id):
         pass
