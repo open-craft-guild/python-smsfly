@@ -15,7 +15,7 @@ class SMSFlyAPI:
         session.auth = HTTPBasicAuth(account_id, account_pass)
         self.__http = session
 
-    @parse_xml_response()
+    @parse_xml_response
     def __request(self, request_xml_body):
         return self.__http.post(self.API_URL, data=request_xml_body)
 
@@ -58,23 +58,23 @@ class SMSFlyAPI:
             rec = xml_req.new_tag('recipient'))
             rec.append(recipient)
             xml_req.request.append(rec)
-        return __request(xml_req)
+        return self.__request(xml_req)
 
     def __getcampaigninfo(self, *, campaign_id):
         xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNINFO')
         xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id))
-        return __request(xml_req)
+        return self.__request(xml_req)
 
     def __getcampaigndetail(self, *, campaign_id):
         xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNDETAIL')
         xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id))
-        return __request(xml_req)
+        return self.__request(xml_req)
 
     def __getmessagestatus(self, *, campaign_id, recipient):
         xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNINFO')
         message = xml_req.new_tag('message', campaignID=str(campaign_id), recipient=str(recipient))
         xml_req.request.append(message)
-        return __request(xml_req)
+        return self.__request(xml_req)
 
     def __getbalance(self):
         return self.__request(self.__construct_xml_payload_base(operation='GETBALANCE'))
