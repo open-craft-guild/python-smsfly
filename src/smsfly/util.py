@@ -1,8 +1,8 @@
 from functools import wraps
 from bs4 import BeautifulSoup as bs
 
-import XMLError, PhoneError, StartTimeError, EndTimeError, LifetimeError, SpeedError,
-       AlphanameError, TextError, InsufficientFundsError from errors
+from errors import XMLError, PhoneError, StartTimeError, EndTimeError, LifetimeError, SpeedError,
+       AlphanameError, TextError, InsufficientFundsError
 
 
 ERROR_MAP = {
