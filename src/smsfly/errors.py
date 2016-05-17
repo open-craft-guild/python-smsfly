@@ -18,11 +18,6 @@ class EndTimeError(ValueError):
     pass
 
 
-class StartTimeError(ValueError):
-    """Incorrect start time of campaign"""
-    pass
-
-
 class LifetimeError(ValueError):
     """Incorrect lifetime of campaign"""
     pass
