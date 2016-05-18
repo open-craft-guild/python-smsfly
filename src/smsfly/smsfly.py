@@ -17,14 +17,14 @@ class SMSFlyAPI:
 
     @parse_xml_response
     def __request(self, request_xml_body):
-        return self.__http.post(self.API_URL, data=request_xml_body)
+        return self.__http.post(self.API_URL, data=str(request_xml_body))
 
     def __construct_xml_payload_base(self, *, operation):
         soup = bs(features='lxml-xml')
         soup.append(soup.new_tag('request'))
         op = soup.new_tag('operation')
         op.string = operation
-        soup.request.append(operation)
+        soup.request.append(op)
         return soup
 
     def send_sms_to_recipient(self, *, start_time, end_time, lifetime, rate, desc, source, body, recipient):
@@ -52,22 +52,22 @@ class SMSFlyAPI:
                     xml_req.request.append(soup.new_tag('body'))
                     xml_req.request.body.append(body)
             else:
-                bod = xml_req.new_tag('body'))
+                bod = xml_req.new_tag('body')
                 bod.append(body)
                 xml_req.request.append(bod)
-            rec = xml_req.new_tag('recipient'))
+            rec = xml_req.new_tag('recipient')
             rec.append(recipient)
             xml_req.request.append(rec)
         return self.__request(xml_req)
 
     def __getcampaigninfo(self, *, campaign_id):
         xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNINFO')
-        xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id))
+        xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id)))
         return self.__request(xml_req)
 
     def __getcampaigndetail(self, *, campaign_id):
         xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNDETAIL')
-        xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id))
+        xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id)))
         return self.__request(xml_req)
 
     def __getmessagestatus(self, *, campaign_id, recipient):
@@ -78,6 +78,9 @@ class SMSFlyAPI:
 
     def __getbalance(self):
         return self.__request(self.__construct_xml_payload_base(operation='GETBALANCE'))
+
+    def getbalance(self):
+        return float(self.__getbalance().message.balance)
 
     def add_alphaname(self, alphaname):
         return self.__managealfaname(command_id='ADDALFANAME', alfaname=alphaname)
