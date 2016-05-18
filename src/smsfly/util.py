@@ -20,10 +20,11 @@ ERROR_MAP = {
     'INSUFFICIENTFUNDS': InsufficientFundsError
 }
 
+
 def parse_xml_response(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        res_xml = bs(f(*args, **kwargs), features='lxml-xml')
+        res_xml = bs(f(*args, **kwargs).text, features='lxml-xml')
         state_code = res_xml.message.state['code']
         try:
             raise ERROR_MAP[state_code]

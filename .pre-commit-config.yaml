@@ -14,7 +14,7 @@
   - id: name-tests-test
   #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
     include: src/tests
+    exclude: src/tests/mocks.py
   - id: flake8
-  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$|Transport/Generated)|surrogates))
   - id: debug-statements
   #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
