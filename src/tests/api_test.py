@@ -3,12 +3,9 @@ try:
 except ImportError:
     import unittest
 
-# from httmock import with_httmock
 import httpretty
 
 from smsfly import SMSFlyAPI
-
-# from mocks import getbalance_success
 
 
 class APITest(unittest.TestCase):
@@ -16,7 +13,6 @@ class APITest(unittest.TestCase):
         self.api = SMSFlyAPI(account_id='3801234567', account_pass='qwerty')
         return super().setUp()
 
-    # @with_httmock(getbalance_success)
     @httpretty.activate
     def test_getbalance(self):
         httpretty.register_uri(httpretty.POST, 'http://sms-fly.com/api/api.php',

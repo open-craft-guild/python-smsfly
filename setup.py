@@ -21,7 +21,6 @@ extras_require = {
         'unittest2==1.1.0',
         'nose==1.3.7',
         'pre-commit==0.8.1',
-        'httmock==1.2.5',
         'httpretty==0.8.14',
     ],
 }
