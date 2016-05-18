@@ -45,4 +45,3 @@ class InsufficientFundsError(Exception):
 class AuthError(ValueError):
     """Authentication failed"""
     pass
-
