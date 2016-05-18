@@ -40,3 +40,9 @@ class TextError(ValueError):
 class InsufficientFundsError(Exception):
     """Insufficient funds. Unable to send messages"""
     pass
+
+
+class AuthError(ValueError):
+    """Authentication failed"""
+    pass
+

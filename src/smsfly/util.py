@@ -4,7 +4,8 @@ from bs4 import BeautifulSoup as bs
 from .errors import (
     XMLError, PhoneError, StartTimeError,
     EndTimeError, LifetimeError, SpeedError,
-    AlphanameError, TextError, InsufficientFundsError
+    AlphanameError, TextError, InsufficientFundsError,
+    AuthError
 )
 
 
@@ -24,10 +25,20 @@ ERROR_MAP = {
 def parse_xml_response(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        res_xml = bs(f(*args, **kwargs).text, features='lxml-xml')
-        state_code = res_xml.message.state['code']
+        res_text = f(*args, **kwargs).text
+
+        if res_text == 'Access denied!':
+            raise AuthError
+
+        res_xml = bs(res_text, features='lxml-xml')
+        res_state = res_xml.message.state
+
         try:
-            raise ERROR_MAP[state_code]
+            if res_state:
+                raise ERROR_MAP[res_state['code'].text]
         except KeyError:
             return res_xml
+        else:
+            return res_xml
+
     return wrapper

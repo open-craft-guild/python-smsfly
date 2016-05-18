@@ -20,11 +20,14 @@ class APITest(unittest.TestCase):
     @httpretty.activate
     def test_getbalance(self):
         httpretty.register_uri(httpretty.POST, 'http://sms-fly.com/api/api.php',
-                               body='123.156')
+                               body="""<?xml version="1.0" encoding="utf-8"?>
+                                       <message>
+                                           <balance>123.156</balance>
+                                       </message>
+                                    """)
         self.assertEqual(self.api.getbalance(), 123.156)
 
     def test_construct_xml_payload_base(self):
         message = self.api._SMSFlyAPI__construct_xml_payload_base(operation='GETBALANCE')
-        print(message)
-        self.assertEqual(str(message), """<?xml version="1.0" encoding="utf-8"?>
-<request><operation>GETBALANCE</operation></request>""")
+        expected = '<?xml version="1.0" encoding="utf-8"?>\n<request><operation>GETBALANCE</operation></request>'
+        self.assertEqual(str(message), expected)

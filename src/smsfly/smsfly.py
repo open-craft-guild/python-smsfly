@@ -80,7 +80,7 @@ class SMSFlyAPI:
         return self.__request(self.__construct_xml_payload_base(operation='GETBALANCE'))
 
     def getbalance(self):
-        return float(self.__getbalance().message.balance)
+        return float(self.__getbalance().message.balance.text)
 
     def add_alphaname(self, alphaname):
         return self.__managealfaname(command_id='ADDALFANAME', alfaname=alphaname)
