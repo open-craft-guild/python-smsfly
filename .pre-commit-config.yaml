@@ -1,0 +1,20 @@
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  sha: master
+  hooks:
+  - id: trailing-whitespace
+    #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
+  - id: check-merge-conflict
+  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
+  - id: double-quote-string-fixer
+  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
+  - id: end-of-file-fixer
+  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
+  # - id: fix-encoding-pragma
+  #   exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
+  - id: name-tests-test
+  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
+    include: src/tests
+  - id: flake8
+  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$|Transport/Generated)|surrogates))
+  - id: debug-statements
+  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
