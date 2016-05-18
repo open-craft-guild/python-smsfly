@@ -1,23 +1,10 @@
-__version__ = '0.1'
-
 import io
 import os
 import sys
 
 from setuptools import setup, find_packages
 
-here = os.path.abspath(os.path.dirname(__file__))
-with io.open(os.path.join(here, 'README.md'), encoding='utf8') as f:
-    README = f.read()
-with io.open(os.path.join(here, 'CHANGELOG.md'), encoding='utf8') as f:
-    CHANGES = f.read()
-PY3 = sys.version_info[0] == 3
-
-if PY3:
-    if "test" in sys.argv or "develop" in sys.argv:
-        for root, directories, files in os.walk("tests"):
-            for directory in directories:
-                extra_options["packages"].append(os.path.join(root, directory))
+__version__ = '0.1'
 
 install_requires = [
     'beautifulsoup4[lxml]==4.4.1',
@@ -28,10 +15,12 @@ extras_require = {
     'dev': [
         'ipdb==0.10.0',    # Helps interactively trace state
         'ipdbplugin==1.4.5',  # Runs interactive debuger on nose test fail
+        'pre-commit==0.8.1',  # Keeps the code nice
     ],
     'test': [
         'unittest2==1.1.0',
         'nose==1.3.7',
+        'pre-commit==0.8.1',
     ],
 }
 
@@ -40,7 +29,20 @@ extra_options = {
     'packages': find_packages(),
 }
 
-setup(name="SMSFly",
+here = os.path.abspath(os.path.dirname(__file__))
+with io.open(os.path.join(here, 'README.md'), encoding='utf8') as f:
+    README = f.read()
+with io.open(os.path.join(here, 'CHANGELOG.md'), encoding='utf8') as f:
+    CHANGES = f.read()
+PY3 = sys.version_info[0] == 3
+
+if PY3:
+    if 'test' in sys.argv or 'develop' in sys.argv:
+        for root, directories, files in os.walk('tests'):
+            for directory in directories:
+                extra_options['packages'].append(os.path.join(root, directory))
+
+setup(name='SMSFly',
       version=__version__,
       description='Python wrapper for SMS-Fly gateway API',
       long_description='\n\n'.join([README, CHANGES]),
@@ -70,5 +72,4 @@ setup(name="SMSFly",
       tests_require=['nose', 'coverage'],
       install_requires=install_requires,
       extras_require=extras_require,
-      **extra_options
-)
+      **extra_options)
