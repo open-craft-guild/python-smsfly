@@ -1,0 +1,11 @@
+language: python
+python: 3.5
+
+# Scripts to install dependencies
+install:
+    - pip install -e .[test]
+
+# Run tests
+script:
+    - pre-commit run --all-files
+    - nosetests
