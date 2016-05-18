@@ -44,12 +44,12 @@ class SMSFlyAPI:
     def __sendsms(self, start_time, end_time, lifetime, rate, desc,
                   source, message_pairs, individual_mode=False):
         add_body = True
-        xml_req = __construct_xml_payload_base(operation='SENDSMS')
+        xml_req = self.__construct_xml_payload_base(operation='SENDSMS')
         for recipient, body in message_pairs:
             if not individual_mode:
                 if add_body:
                     add_body = not add_body
-                    xml_req.request.append(soup.new_tag('body'))
+                    xml_req.request.append(xml_req.new_tag('body'))
                     xml_req.request.body.append(body)
             else:
                 bod = xml_req.new_tag('body')
@@ -61,17 +61,17 @@ class SMSFlyAPI:
         return self.__request(xml_req)
 
     def __getcampaigninfo(self, *, campaign_id):
-        xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNINFO')
+        xml_req = self.__construct_xml_payload_base(operation='GETCAMPAIGNINFO')
         xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id)))
         return self.__request(xml_req)
 
     def __getcampaigndetail(self, *, campaign_id):
-        xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNDETAIL')
+        xml_req = self.__construct_xml_payload_base(operation='GETCAMPAIGNDETAIL')
         xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id)))
         return self.__request(xml_req)
 
     def __getmessagestatus(self, *, campaign_id, recipient):
-        xml_req = __construct_xml_payload_base(operation='GETCAMPAIGNINFO')
+        xml_req = self.__construct_xml_payload_base(operation='GETCAMPAIGNINFO')
         message = xml_req.new_tag('message', campaignID=str(campaign_id), recipient=str(recipient))
         xml_req.request.append(message)
         return self.__request(xml_req)
