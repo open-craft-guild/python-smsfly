@@ -45,19 +45,22 @@ class SMSFlyAPI:
                   source, message_pairs, individual_mode=False):
         add_body = True
         xml_req = self.__construct_xml_payload_base(operation='SENDSMS')
+        msg = xml_req.new_tag('message', start_time=start_time, end_time=end_time,
+                              lifetime=lifetime, rate=rate, desc=desc, source=source)
+        xml_req.request.append(msg)
         for recipient, body in message_pairs:
             if not individual_mode:
                 if add_body:
                     add_body = not add_body
-                    xml_req.request.append(xml_req.new_tag('body'))
-                    xml_req.request.body.append(body)
+                    xml_req.request.message.append(xml_req.new_tag('body'))
+                    xml_req.request.message.body.append(body)
             else:
                 bod = xml_req.new_tag('body')
                 bod.append(body)
-                xml_req.request.append(bod)
+                xml_req.request.message.append(bod)
             rec = xml_req.new_tag('recipient')
             rec.append(recipient)
-            xml_req.request.append(rec)
+            xml_req.request.message.append(rec)
         return self.__request(xml_req)
 
     def __getcampaigninfo(self, *, campaign_id):
@@ -65,16 +68,22 @@ class SMSFlyAPI:
         xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id)))
         return self.__request(xml_req)
 
+    getcampaigninfo = __getcampaigninfo
+
     def __getcampaigndetail(self, *, campaign_id):
         xml_req = self.__construct_xml_payload_base(operation='GETCAMPAIGNDETAIL')
         xml_req.request.append(xml_req.new_tag('message', campaignID=str(campaign_id)))
         return self.__request(xml_req)
+
+    getcampaigndetail = __getcampaigndetail
 
     def __getmessagestatus(self, *, campaign_id, recipient):
         xml_req = self.__construct_xml_payload_base(operation='GETCAMPAIGNINFO')
         message = xml_req.new_tag('message', campaignID=str(campaign_id), recipient=str(recipient))
         xml_req.request.append(message)
         return self.__request(xml_req)
+
+    getmessagestatus = __getmessagestatus
 
     def __getbalance(self):
         return self.__request(self.__construct_xml_payload_base(operation='GETBALANCE'))
