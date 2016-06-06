@@ -15,7 +15,7 @@ class APITest(unittest.TestCase):
 
     @httpretty.activate
     def test_getbalance(self):
-        httpretty.register_uri(httpretty.POST, 'http://sms-fly.com/api/api.php',
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL,
                                body="""<?xml version="1.0" encoding="utf-8"?>
                                        <message>
                                            <balance>123.156</balance>
@@ -33,7 +33,7 @@ class APITest(unittest.TestCase):
         def request_callback(request, uri, headers):
             return (200, headers, request.body)
 
-        httpretty.register_uri(httpretty.POST, 'http://sms-fly.com/api/api.php', body=request_callback)
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL, body=request_callback)
 
         message = self.api._SMSFlyAPI__sendsms(
             start_time='2016-05-31 12:25:41',
@@ -52,3 +52,51 @@ class APITest(unittest.TestCase):
                     '<body>Hello</body><recipient>380950110101</recipient></message></request>')
 
         self.assertEqual(str(message), expected)
+
+    @httpretty.activate
+    def test_add_alphaname(self):
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL,
+                               body="""<?xml version="1.0" encoding="utf-8"?>
+                                       <message>
+                                           <state alfaname="TEST_ALPHANAME" status="MODERATE" />
+                                       </message>
+                                    """)
+
+        alphaname_res = self.api.add_alphaname('TEST_ALPHANAME')
+        self.assertEqual(alphaname_res.state.attrs['alfaname'], 'TEST_ALPHANAME')  # it's `alfaname` due to docs :(
+        self.assertEqual(alphaname_res.state.attrs['status'], 'MODERATE')
+
+    @httpretty.activate
+    def test_check_alphaname(self):
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL,
+                               body="""<?xml version="1.0" encoding="utf-8"?>
+                                       <message>
+                                           <state alfaname="TEST_ALPHANAME" status="ACTIVE" />
+                                       </message>
+                                    """)
+
+        alphaname_res = self.api.check_alphaname('TEST_ALPHANAME')
+        self.assertEqual(alphaname_res.state.attrs['alfaname'], 'TEST_ALPHANAME')  # it's `alfaname` due to docs :(
+        self.assertEqual(alphaname_res.state.attrs['status'], 'ACTIVE')
+
+    @httpretty.activate
+    def test_get_alphanames_list(self):
+        expected_results = (
+            ('TEST_ALPHANAME', 'ACTIVE'),
+            ('GRAMMAR_NAZI', 'ACTIVE'),
+            ('LALALA', 'MODERATE'),
+        )
+
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL,
+                               body="""<?xml version="1.0" encoding="utf-8"?>
+                                       <message>
+                                           <state alfaname="TEST_ALPHANAME" status="ACTIVE" />
+                                           <state alfaname="GRAMMAR_NAZI" status="ACTIVE" />
+                                           <state alfaname="LALALA" status="MODERATE" />
+                                       </message>
+                                    """)
+
+        alphaname_res = self.api.get_alphanames_list()
+        for n, state in enumerate(alphaname_res.findAll('state')):
+            self.assertEqual(state.attrs['alfaname'], expected_results[n][0])  # it's `alfaname` due to docs :(
+            self.assertEqual(state.attrs['status'], expected_results[n][1])
