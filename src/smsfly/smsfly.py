@@ -102,9 +102,9 @@ class SMSFlyAPI:
 
     def __managealfaname(self, *, command_id, alfaname=None):
         xml_req = self.__construct_xml_payload_base(operation='MANAGEALFANAME')
-        xml_req.append(xml_req.new_tag('command', id=command_id))
+        xml_req.request.append(xml_req.new_tag('command', id=command_id))
 
         if alfaname:
-            xml_req.command['alfaname'] = alfaname
+            xml_req.request.command['alfaname'] = alfaname
 
         return self.__request(xml_req)

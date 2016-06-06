@@ -8,6 +8,10 @@ import httpretty
 from smsfly import SMSFlyAPI
 
 
+def request_body_callback(request, uri, headers):
+    return (200, headers, request.body)
+
+
 class APITest(unittest.TestCase):
     def setUp(self):
         self.api = SMSFlyAPI(account_id='3801234567', account_pass='qwerty')
@@ -30,10 +34,7 @@ class APITest(unittest.TestCase):
 
     @httpretty.activate
     def test_sendsms(self):
-        def request_callback(request, uri, headers):
-            return (200, headers, request.body)
-
-        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL, body=request_callback)
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL, body=request_body_callback)
 
         message = self.api._SMSFlyAPI__sendsms(
             start_time='2016-05-31 12:25:41',
@@ -66,6 +67,20 @@ class APITest(unittest.TestCase):
         self.assertEqual(alphaname_res.state.attrs['alfaname'], 'TEST_ALPHANAME')  # it's `alfaname` due to docs :(
         self.assertEqual(alphaname_res.state.attrs['status'], 'MODERATE')
 
+        httpretty.reset()
+
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL,
+                               body=request_body_callback)
+
+        api_req_body = self.api.add_alphaname('TEST_ALPHANAME')
+        expected_body = ('<?xml version="1.0" encoding="utf-8"?>\n'
+                         '<request>'
+                         '<operation>MANAGEALFANAME</operation>'
+                         '<command alfaname="TEST_ALPHANAME" id="ADDALFANAME"/>'
+                         '</request>')
+
+        self.assertEqual(str(api_req_body), expected_body)
+
     @httpretty.activate
     def test_check_alphaname(self):
         httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL,
@@ -78,6 +93,20 @@ class APITest(unittest.TestCase):
         alphaname_res = self.api.check_alphaname('TEST_ALPHANAME')
         self.assertEqual(alphaname_res.state.attrs['alfaname'], 'TEST_ALPHANAME')  # it's `alfaname` due to docs :(
         self.assertEqual(alphaname_res.state.attrs['status'], 'ACTIVE')
+
+        httpretty.reset()
+
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL,
+                               body=request_body_callback)
+
+        api_req_body = self.api.check_alphaname('TEST_ALPHANAME')
+        expected_body = ('<?xml version="1.0" encoding="utf-8"?>\n'
+                         '<request>'
+                         '<operation>MANAGEALFANAME</operation>'
+                         '<command alfaname="TEST_ALPHANAME" id="CHECKALFANAME"/>'
+                         '</request>')
+
+        self.assertEqual(str(api_req_body), expected_body)
 
     @httpretty.activate
     def test_get_alphanames_list(self):
@@ -100,3 +129,17 @@ class APITest(unittest.TestCase):
         for n, state in enumerate(alphaname_res.findAll('state')):
             self.assertEqual(state.attrs['alfaname'], expected_results[n][0])  # it's `alfaname` due to docs :(
             self.assertEqual(state.attrs['status'], expected_results[n][1])
+
+        httpretty.reset()
+
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL,
+                               body=request_body_callback)
+
+        api_req_body = self.api.get_alphanames_list()
+        expected_body = ('<?xml version="1.0" encoding="utf-8"?>\n'
+                         '<request>'
+                         '<operation>MANAGEALFANAME</operation>'
+                         '<command id="GETALFANAMESLIST"/>'
+                         '</request>')
+
+        self.assertEqual(str(api_req_body), expected_body)

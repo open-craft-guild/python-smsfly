@@ -31,12 +31,12 @@ def parse_xml_response(f):
             raise AuthError
 
         res_xml = bs(res_text, features='lxml-xml')
-        res_state = res_xml.message.state
 
         try:
+            res_state = res_xml.message.state
             if res_state:
                 raise ERROR_MAP[res_state['code'].text]
-        except KeyError:
+        except (KeyError, AttributeError):
             return res_xml
         else:
             return res_xml
