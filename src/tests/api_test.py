@@ -55,6 +55,29 @@ class APITest(unittest.TestCase):
         self.assertEqual(str(message), expected)
 
     @httpretty.activate
+    def test_send_sms_to_recipient(self):
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL, body=request_body_callback)
+
+        message = self.api.send_sms_to_recipient(
+            start_time='2016-05-31 12:25:41',
+            end_time='2016-05-31 12:25:41',
+            lifetime='400',
+            rate='120',
+            desc='Test sending single message',
+            source='TEST',
+            body='380950110101',
+            recipient='This is a test message'
+        )
+
+        expected = ('<?xml version="1.0" encoding="utf-8"?>\n<request>'
+                    '<operation>SENDSMS</operation><message desc="Test sending single message"'
+                    ' end_time="2016-05-31 12:25:41" lifetime="400" rate="120"'
+                    ' source="TEST" start_time="2016-05-31 12:25:41">'
+                    '<body>This is a test message</body><recipient>380950110101</recipient></message></request>')
+
+        self.assertEqual(str(message), expected)
+
+    @httpretty.activate
     def test_add_alphaname(self):
         httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL,
                                body="""<?xml version="1.0" encoding="utf-8"?>
