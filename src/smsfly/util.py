@@ -1,3 +1,5 @@
+import logging
+
 from functools import wraps
 from bs4 import BeautifulSoup as bs
 
@@ -8,6 +10,8 @@ from .errors import (
     AuthError
 )
 
+
+logger = logging.getLogger(__name__)
 
 ERROR_MAP = {
     'XMLERROR': XMLError,
@@ -26,8 +30,10 @@ def parse_xml_response(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         res_text = f(*args, **kwargs).text
+        logger.debug('Raw API response: {}'.format(res_text))
 
         if res_text == 'Access denied!':
+            logger.error('Oops.. Authentication data is invalid')
             raise AuthError
 
         res_xml = bs(res_text, features='lxml-xml')
@@ -35,10 +41,17 @@ def parse_xml_response(f):
         try:
             res_state = res_xml.message.state
             if res_state:
-                raise ERROR_MAP[res_state['code'].text]
+                logger.debug("There's state specified in API response: {}. "
+                             "Checking whether it's an error message...".
+                             format(res_state))
+                exc = ERROR_MAP[res_state['code'].text]
+                logger.error('Exception happened: {}'.format(exc))
+                raise exc
         except (KeyError, AttributeError):
+            logger.debug('No error stated in <state> tag of API response: {}')
             return res_xml
         else:
+            logger.debug('No exception has been raised while processing API response')
             return res_xml
 
     return wrapper

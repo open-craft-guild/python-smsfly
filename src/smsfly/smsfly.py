@@ -1,3 +1,4 @@
+import logging
 import os
 
 import requests as req
@@ -7,6 +8,9 @@ from bs4 import BeautifulSoup as bs
 from .util import parse_xml_response
 
 
+logger = logging.getLogger(__name__)
+
+
 class SMSFlyAPI:
     API_URL = 'http://sms-fly.com/api/api.php'
 
@@ -14,10 +18,14 @@ class SMSFlyAPI:
         session = req.Session()
         session.auth = HTTPBasicAuth(account_id, account_pass)
         self.__http = session
+        logger.debug('SMS-Fly API wrapper has been initialized')
 
     @parse_xml_response
     def __request(self, request_xml_body):
-        return self.__http.post(self.API_URL, data=str(request_xml_body))
+        req_body = str(request_xml_body)
+        logger.debug('Submitting POST request to SMS-Fly API {}.\nRequest body: {}'.
+                     format(self.API_URL, req_body))
+        return self.__http.post(self.API_URL, data=req_body)
 
     def __construct_xml_payload_base(self, *, operation):
         soup = bs(features='lxml-xml')
