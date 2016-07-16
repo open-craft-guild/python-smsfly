@@ -65,8 +65,8 @@ class APITest(unittest.TestCase):
             rate='120',
             desc='Test sending single message',
             source='TEST',
-            body='380950110101',
-            recipient='This is a test message'
+            body='This is a test message',
+            recipient='380950110101'
         )
 
         expected = ('<?xml version="1.0" encoding="utf-8"?>\n<request>'

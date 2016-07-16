@@ -37,7 +37,7 @@ class SMSFlyAPI:
 
     def send_sms_to_recipient(self, *, start_time, end_time, lifetime, rate, desc, source, body, recipient):
         return self.__sendsms(start_time, end_time, lifetime, rate, desc, source,
-                              message_pairs=((body, recipient), ), individual_mode=False)
+                              message_pairs=((recipient, body), ), individual_mode=False)
 
     def send_sms_to_recipients(self, *, start_time, end_time, lifetime, rate, desc, source, body, recipients):
         message_pairs = list(map(lambda r: [r], recipients))
