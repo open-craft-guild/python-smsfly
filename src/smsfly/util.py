@@ -44,7 +44,7 @@ def parse_xml_response(f):
                 logger.debug("There's state specified in API response: {}. "
                              "Checking whether it's an error message...".
                              format(res_state))
-                exc = ERROR_MAP[res_state['code'].text]
+                exc = ERROR_MAP[res_state.attrs['code']]
                 logger.error('Exception happened: {}'.format(exc))
                 raise exc
         except (KeyError, AttributeError):
