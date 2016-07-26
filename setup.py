@@ -4,7 +4,7 @@ import sys
 
 from setuptools import setup, find_packages
 
-__version__ = '0.1.3'
+__version__ = '0.1.3.1'
 
 install_requires = [
     'beautifulsoup4[lxml]==4.4.1',
