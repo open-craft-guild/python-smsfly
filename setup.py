@@ -4,7 +4,7 @@ import sys
 
 from setuptools import setup, find_packages
 
-__version__ = '0.1'
+__version__ = '0.1.3'
 
 install_requires = [
     'beautifulsoup4[lxml]==4.4.1',
@@ -47,7 +47,7 @@ setup(name='SMSFly',
       version=__version__,
       description='Python wrapper for SMS-Fly gateway API',
       long_description='\n\n'.join([README, CHANGES]),
-      classifiers=['Development Status :: 1 - Planning',
+      classifiers=['Development Status :: 3 - Alpha',
                    'Environment :: Plugins',
                    'Environment :: Web Environment',
                    'Intended Audience :: Developers',
