@@ -8,4 +8,4 @@ install:
 # Run tests
 script:
     - pre-commit run --all-files
-    - nosetests
+    - nosetests -svv
