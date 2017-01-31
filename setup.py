@@ -7,19 +7,19 @@ from setuptools import setup, find_packages
 __version__ = '0.1.3.1'
 
 install_requires = [
-    'beautifulsoup4[lxml]==4.4.1',
-    'requests==2.10.0',
+    'beautifulsoup4[lxml]==4.5.3',
+    'requests==2.13.0',
 ]
 
 extras_require = {
     'dev': [
         'ipdb==0.10.0',    # Helps interactively trace state
         'ipdbplugin==1.4.5',  # Runs interactive debuger on nose test fail
-        'pre-commit==0.8.1',  # Keeps the code nice
+        'pre-commit==0.12.2',  # Keeps the code nice
     ],
     'test': [
         'nose==1.3.7',
-        'pre-commit==0.8.1',
+        'pre-commit==0.12.2',
         'httpretty==0.8.14',
     ],
 }
