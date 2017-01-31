@@ -16,5 +16,6 @@
     include: src/tests
     exclude: src/tests/mocks.py
   - id: flake8
+    args: [--max-line-length=120]
   - id: debug-statements
   #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
