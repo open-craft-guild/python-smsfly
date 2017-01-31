@@ -18,7 +18,6 @@ extras_require = {
         'pre-commit==0.8.1',  # Keeps the code nice
     ],
     'test': [
-        'unittest2==1.1.0',
         'nose==1.3.7',
         'pre-commit==0.8.1',
         'httpretty==0.8.14',
