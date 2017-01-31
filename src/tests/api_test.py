@@ -33,6 +33,28 @@ class APITest(unittest.TestCase):
         self.assertEqual(str(message), expected)
 
     @httpretty.activate
+    def test_sendsms_unicode(self):
+        httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL, body=request_body_callback)
+
+        message = self.api._SMSFlyAPI__sendsms(
+            start_time='2016-05-31 12:25:41',
+            end_time='2016-05-31 12:25:41',
+            lifetime='400',
+            rate='120',
+            desc='Тестова кампанія',
+            source='ТЕСТ',
+            message_pairs=[('380950110101', 'Привіт!')]
+        )
+
+        expected = ('<?xml version="1.0" encoding="utf-8"?>\n<request>'
+                    '<operation>SENDSMS</operation><message desc="Тестова кампанія"'
+                    ' end_time="2016-05-31 12:25:41" lifetime="400" rate="120"'
+                    ' source="ТЕСТ" start_time="2016-05-31 12:25:41">'
+                    '<body>Привіт!</body><recipient>380950110101</recipient></message></request>')
+
+        self.assertEqual(str(message), expected)
+
+    @httpretty.activate
     def test_sendsms(self):
         httpretty.register_uri(httpretty.POST, SMSFlyAPI.API_URL, body=request_body_callback)
 

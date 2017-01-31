@@ -22,7 +22,7 @@ class SMSFlyAPI:
 
     @parse_xml_response
     def __request(self, request_xml_body):
-        req_body = str(request_xml_body)
+        req_body = str(request_xml_body).encode('utf-8')
         logger.debug('Submitting POST request to SMS-Fly API {}.\nRequest body: {}'.
                      format(self.API_URL, req_body))
         return self.__http.post(self.API_URL, data=req_body)
