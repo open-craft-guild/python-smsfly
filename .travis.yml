@@ -1,11 +1,16 @@
 language: python
-python: 3.5
+python:
+- 3.5
+- 3.6
+- 3.6-dev
+- 3.7-dev
+- nightly
 
 # Scripts to install dependencies
 install:
-    - pip install -e .[test]
+- pip install -e .[test]
 
 # Run tests
 script:
-    - pre-commit run --all-files
-    - nosetests -svv
+- pre-commit run --all-files
+- nosetests -svv
