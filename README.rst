@@ -57,5 +57,6 @@ Usage
     api = SMSFlyAPI(account_id='3801234567', account_pass='qwerty')
     api.getbalance()
 
-## Other implementations
+Other implementations
+#####################
 * `PHP package <https://github.com/vchizi/SMSFly>`_
