@@ -1,7 +1,5 @@
 # The MIT License (MIT)
-**Copyright &copy; 2016 Open Craft Guild (
-`Anna Kurylo <https://github.com/bluebirrrrd>_` and
-`Sviatoslav Sydorenko <https://github.com/webknjaz>_`)**
+**Copyright &copy; 2016 Open Craft Guild (`Anna Kurylo <https://github.com/bluebirrrrd>_` and `Sviatoslav Sydorenko <https://github.com/webknjaz>_`)**
 
 * * *
 
