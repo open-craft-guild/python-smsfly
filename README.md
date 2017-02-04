@@ -3,6 +3,11 @@
 # python-smsfly
 SMS-Fly gateway API Python package
 
+## Install it
+```sh
+pip install SMSFly
+```
+
 ## Development
 ```sh
 pip install -e .[test,dev]
