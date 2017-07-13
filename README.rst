@@ -59,4 +59,5 @@ Usage
 
 Other implementations
 #####################
-* `PHP package <https://github.com/vchizi/SMSFly>`_
+* `PHP package <https://github.com/vchizi/SMSFly>`_ by `@vchizi <https://github.com/vchizi>`_
+* `OpenCard integration in PHP <https://github.com/vov1/opencart-flysms>`_ by `@vov1 <https://github.com/vov1>`_
