@@ -1,21 +1,37 @@
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  sha: master
+  sha: 5bf6c09
   hooks:
   - id: trailing-whitespace
-    #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
+  - id: flake8
+    # 79 chars is too strict and we don't have 80-char terminals nowadays,
+    # 160 chars is too much since it doesn't let us use split view efficiently:
+    args: [--max-line-length=120]
   - id: check-merge-conflict
-  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
   - id: double-quote-string-fixer
-  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
   - id: end-of-file-fixer
-  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
-  # - id: fix-encoding-pragma
-  #   exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
   - id: name-tests-test
-  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
     include: src/tests
     exclude: src/tests/mocks.py
-  - id: flake8
-    args: [--max-line-length=120]
   - id: debug-statements
-  #exclude: wargaming|bigworld|saber/(server|template|tools|transport|scripts/(common/(TemplateData|pydev|bwpydevd.py$)|surrogates))
+  - id: check-added-large-files
+  - id: check-ast
+  - id: check-byte-order-marker
+  - id: check-case-conflict
+  - id: check-docstring-first
+  - id: check-json
+  - id: pretty-format-json
+  - id: check-symlinks
+  - id: check-yaml
+  - id: detect-private-key
+  - id: requirements-txt-fixer
+
+- repo: git://github.com/FalconSocial/pre-commit-mirrors-pep257
+  sha: f464d46
+  hooks:
+  - id: pep257
+    exclude: (src|setup.py)  # Temporary disable this check
+
+- repo: git://github.com/Lucas-C/pre-commit-hooks
+  sha: 1e30aa4
+  hooks:
+  - id: remove-tabs
