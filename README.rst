@@ -59,5 +59,7 @@ Usage
 
 Other implementations
 #####################
+
+* `Ruby gem <https://github.com/Serhii-Danovsky/smsfly>`_ by `@Serhii-Danovsky <https://github.com/Serhii-Danovsky>`_
 * `PHP package <https://github.com/vchizi/SMSFly>`_ by `@vchizi <https://github.com/vchizi>`_
 * `OpenCard integration in PHP <https://github.com/vov1/opencart-flysms>`_ by `@vov1 <https://github.com/vov1>`_
