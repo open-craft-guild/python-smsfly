@@ -12,10 +12,6 @@ python:
 # Cache pip downloads to speed-up build
 cache: pip
 
-env:
-  global:
-    TOXENV: pre-commit,python
-
 # Scripts to install dependencies
 before_install:
 - python3 -m pip install -U tox
@@ -26,15 +22,30 @@ install:
 script:
 - python3 -m tox
 
-before_deploy:
-- python3 -m tox -e build-dists
-- echo > setup.py
-deploy:
-  provider: pypi
-  on:
-    tags: true
+jobs:
+  fast_finish: true
+  include:
+  - python: 3.7
+    name: Checking pre-commit linter compliance
+    env:
+      TOXENV: pre-commit
+
+  - &deploy-job
+    stage: Upload a new version of python package to PYPI
+    name: Publishing current Git tagged version of dist to PyPI
+    if: repo == "open-craft-guild/python-smsfly" AND tag IS present
     python: 3.7
-  user: webknjaz
-  password:
-    secure: tEur3AytUMER9L7iVqGwRmprbGRj5c76EGFow6Fbv+y61bEJuz5g7ikrRK0Xgr0jMVgckjEaK8+9F7HKJ15zHiJpOJdKKtkEiMTMZaxd48IewnjJypNYElFLNMiSwaHUJy0k0Pz/dYmV5qjWkPP+nmKnZJSuuv4PkUQYxyCsiXvrF08fN3m6ODtr4JIeMltHWuxbD7vQu8/Grdd5PHee2XGzoxFP5vfgkZ0o+YKgfDzsJv8YdsKfUECQuiG1Wn8VepDRPtx0wkTraSlia8EzxBfupMEPkPFH3gzea37HVo/rVNEJiwd4se6gwde+sPTrkoosgTYhBrTNO/6k2jSdiJXSXLXGhd52YJ8S492io7oK3/lgOkUGf8qtOYNak/W0Kyt8PorS5OsqnHBDskRiBnbDae/JJ7h3RWXfnXdSiy05YsNBb1sOpM5ViWFJyAVwa3y3KEHYhqCHbQAlwDGQI7faKVl+lpSfz82rgrlguGPhpigs9Zdd6fKl8J36M4XRE3WgwAcoN8whpB52XzKUWiKKMM78qry6fUa01NXMUBtb8NUgqv1bHslm43V3tLH1XsF3G4IZVmR8+6c118yZHTMUw6zp1yMY2a1GE5/CZOHKxkcSmiYZHhuj5zbfmFt5P3rRt0y/TBZlrLG4EPnDZ/nhTP/o8CRTdsxjZZNk+4Y=
-  distributions: release
+    env:
+      TOXENV: build-dists
+    before_deploy:
+    - echo > setup.py
+    deploy:
+      provider: pypi
+      on:
+        all_branches: true
+        tags: true
+      user: webknjaz
+      password:
+        secure: tEur3AytUMER9L7iVqGwRmprbGRj5c76EGFow6Fbv+y61bEJuz5g7ikrRK0Xgr0jMVgckjEaK8+9F7HKJ15zHiJpOJdKKtkEiMTMZaxd48IewnjJypNYElFLNMiSwaHUJy0k0Pz/dYmV5qjWkPP+nmKnZJSuuv4PkUQYxyCsiXvrF08fN3m6ODtr4JIeMltHWuxbD7vQu8/Grdd5PHee2XGzoxFP5vfgkZ0o+YKgfDzsJv8YdsKfUECQuiG1Wn8VepDRPtx0wkTraSlia8EzxBfupMEPkPFH3gzea37HVo/rVNEJiwd4se6gwde+sPTrkoosgTYhBrTNO/6k2jSdiJXSXLXGhd52YJ8S492io7oK3/lgOkUGf8qtOYNak/W0Kyt8PorS5OsqnHBDskRiBnbDae/JJ7h3RWXfnXdSiy05YsNBb1sOpM5ViWFJyAVwa3y3KEHYhqCHbQAlwDGQI7faKVl+lpSfz82rgrlguGPhpigs9Zdd6fKl8J36M4XRE3WgwAcoN8whpB52XzKUWiKKMM78qry6fUa01NXMUBtb8NUgqv1bHslm43V3tLH1XsF3G4IZVmR8+6c118yZHTMUw6zp1yMY2a1GE5/CZOHKxkcSmiYZHhuj5zbfmFt5P3rRt0y/TBZlrLG4EPnDZ/nhTP/o8CRTdsxjZZNk+4Y=
+      distributions: release
+      skip-cleanup: true
