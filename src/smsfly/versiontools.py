@@ -10,7 +10,7 @@ def get_version_from_scm_tag(
         root='.',
         relative_to=None,
         local_scheme='node-and-date',
-) -> str:
+):
     """Retrieve the version from SCM tag in Git or Hg."""
     try:
         return get_version(
