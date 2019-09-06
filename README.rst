@@ -31,21 +31,13 @@ Install it
 
     pip install SMSFly
 
-Development
-###########
-
-.. code-block:: sh
-
-    pip install -e .[test,dev]
-    nosetests --ipdb
-
 Testing
 #######
 
 .. code-block:: shell
 
-    pip install -e .[test]
-    nosetests
+    pip install tox --user
+    tox
 
 Usage
 #####
