@@ -27,7 +27,7 @@ script:
 - python3 -m tox
 
 before_deploy:
-- python3 -m tox -e build-dists 
+- python3 -m tox -e build-dists
 - echo > setup.py
 deploy:
   provider: pypi
