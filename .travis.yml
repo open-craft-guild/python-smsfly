@@ -18,7 +18,7 @@ env:
 
 # Scripts to install dependencies
 before_install:
-- python3 -m pip install -U tox --user
+- python3 -m pip install -U tox
 install:
 - python3 -m tox --notest
 
