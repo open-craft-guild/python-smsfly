@@ -26,7 +26,7 @@ extras_require = {
 
 extra_options = {
     'package_dir': {'': 'src'},
-    'packages': find_packages(),
+    'packages': find_packages(where='src'),
 }
 
 here = os.path.abspath(os.path.dirname(__file__))
